@@ -1,123 +1,86 @@
 import Image from "next/image";
 import Link from "next/link";
+import AnimatedWordmark from "@/components/ui/AnimatedWordmark";
+
+// TODO: sostituire con gli URL reali dei profili
+const socials = [
+  { name: "Instagram", href: "https://www.instagram.com/", icon: "/social/whatabout-instagram-icon-white.svg" },
+  { name: "TikTok", href: "https://www.tiktok.com/", icon: "/social/whatabout-tiktok-icon-white.svg" },
+];
+
+function SocialLinks({ className = "", iconClassName = "" }: { className?: string; iconClassName?: string }) {
+  return (
+    <div className={`flex items-center gap-5 ${className}`}>
+      {socials.map((s) => (
+        <a
+          key={s.name}
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={s.name}
+          className="hover:opacity-70 transition-opacity"
+        >
+          <Image src={s.icon} alt="" width={48} height={48} className={iconClassName} />
+        </a>
+      ))}
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
-    <footer className="bg-bg-dark border-t border-white/10">
-      {/* Main footer content */}
-      <div className="wa-section my-0 py-10 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {/* Col 1: Navigazione + legale */}
-          <div>
-            <p
-              className="text-bg-light/40 uppercase mb-4"
-              style={{ fontFamily: "Funnel Display", fontWeight: 700, fontSize: "11px", letterSpacing: "0.14em" }}
-            >
-              Navigazione
-            </p>
-            <nav className="flex flex-col gap-2">
-              {[
-                { label: "Il Progetto", href: "/progetto" },
-                { label: "The Whatabout Tower", href: "/tower" },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-bg-light/70 hover:text-bg-light transition-colors uppercase"
-                  style={{ fontFamily: "DX Playhigh Expanded", fontSize: "14px" }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </nav>
+    <footer className="bg-primary text-bg-light rounded-section mt-[160px] mx-3 md:mx-4 lg:mx-5 mb-3 md:mb-4 lg:mb-5 p-5">
+      {/* Wordmark */}
+      <AnimatedWordmark variant="cream" trigger="inView" className="w-full" />
 
-            <div className="mt-8 flex flex-col gap-2">
-              {[
-                { label: "Privacy Policy", href: "/privacy" },
-                { label: "Termini e Condizioni", href: "/termini" },
-                { label: "FAQ", href: "/faq" },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-bg-light/40 hover:text-bg-light/70 transition-colors"
-                  style={{ fontFamily: "Funnel Display", fontWeight: 400, fontSize: "12px" }}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-          </div>
+      {/* Mobile: icone social subito sotto il wordmark (su desktop stanno nella riga finale) */}
+      <SocialLinks className="md:hidden mt-[80px] px-5" iconClassName="w-9 h-9" />
 
-          {/* Col 2: Collaborazioni */}
+      {/* Contatti + link. Mobile: contatti sopra, link sotto. Desktop: link a sinistra, contatti a destra. */}
+      <div className="mt-[50px] md:mt-[60px] px-5 md:px-0 grid grid-cols-1 md:grid-cols-[598fr_762fr] gap-[80px] md:gap-0">
+        <div className="flex flex-col gap-[50px] md:col-start-2 md:row-start-1">
           <div>
-            <p
-              className="text-bg-light/40 uppercase mb-4"
-              style={{ fontFamily: "Funnel Display", fontWeight: 700, fontSize: "11px", letterSpacing: "0.14em" }}
-            >
-              Collaborazioni
-            </p>
-            <p className="text-bg-light/60 mb-2" style={{ fontFamily: "Funnel Display", fontWeight: 300, fontSize: "13px" }}>
-              Per collaborazioni, press e partnership:
-            </p>
+            <p className="font-body font-bold uppercase text-[14px] leading-none mb-5">info &amp; collaborazioni</p>
             <a
-              href="mailto:ciao@ellelab.it"
-              className="text-bg-light hover:text-primary-light transition-colors"
-              style={{ fontFamily: "DX Playhigh Expanded", fontSize: "14px" }}
+              href="mailto:hello@thewhataboutproject.it"
+              className="font-body font-medium text-[20px] md:text-[36px] leading-none hover:opacity-70 transition-opacity break-all"
             >
-              ciao@ellelab.it
+              hello@thewhataboutproject.it
             </a>
           </div>
-
-          {/* Col 3: Ordini */}
           <div>
-            <p
-              className="text-bg-light/40 uppercase mb-4"
-              style={{ fontFamily: "Funnel Display", fontWeight: 700, fontSize: "11px", letterSpacing: "0.14em" }}
-            >
-              Ordini & Assistenza
-            </p>
-            <p className="text-bg-light/60 mb-2" style={{ fontFamily: "Funnel Display", fontWeight: 300, fontSize: "13px" }}>
-              Per domande su ordini e spedizioni:
-            </p>
+            <p className="font-body font-bold uppercase text-[14px] leading-none mb-5">info ordini &amp; spedizioni</p>
             <a
-              href="mailto:ordini@ellelab.it"
-              className="text-bg-light hover:text-primary-light transition-colors"
-              style={{ fontFamily: "DX Playhigh Expanded", fontSize: "14px" }}
+              href="mailto:help@thewhataboutproject.it"
+              className="font-body font-medium text-[20px] md:text-[36px] leading-none hover:opacity-70 transition-opacity break-all"
             >
-              ordini@ellelab.it
+              help@thewhataboutproject.it
             </a>
           </div>
         </div>
+
+        <nav className="flex flex-col gap-3.5 font-body font-bold uppercase text-[14px] leading-none md:col-start-1 md:row-start-1">
+          <Link href="/privacy" className="hover:opacity-70 transition-opacity">
+            privacy &amp; cookie policy
+          </Link>
+          <Link href="/termini" className="hover:opacity-70 transition-opacity">
+            termini e condizioni
+          </Link>
+          <Link href="/faq" className="hover:opacity-70 transition-opacity">
+            domande frequenti
+          </Link>
+        </nav>
       </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-white/10 px-5 md:px-16 py-5">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Logo */}
-          <Image
-            src="/logo/logo-light.svg"
-            alt="What About"
-            width={100}
-            height={18}
-            className="opacity-30"
-          />
-
-          {/* Address */}
-          <p
-            className="text-bg-light/30 text-center"
-            style={{ fontFamily: "Funnel Display", fontWeight: 300, fontSize: "11px" }}
-          >
-            Elle Lab — Via Emilio Faà di Bruno 7, 20149 Milano — P.IVA IT12345678901
-          </p>
-
-          {/* Copyright */}
-          <p
-            className="text-bg-light/30"
-            style={{ fontFamily: "Funnel Display", fontWeight: 300, fontSize: "11px" }}
-          >
-            © 2025 What About. Tutti i diritti riservati.
-          </p>
+      {/* Riga finale: logo Elle Lab + indirizzo, copyright (+ social su desktop) */}
+      <div className="mt-[80px] md:mt-[100px] px-5 md:px-0 grid grid-cols-1 md:grid-cols-[591fr_769fr] gap-10 md:gap-0 font-body text-[14px] leading-none">
+        <div className="flex flex-col items-start gap-6 md:gap-3">
+          <Image src="/logo/ellelab-logo-white.svg" alt="Elle Lab" width={134} height={14} className="h-3.5 w-auto" />
+          <span>Via Bernardo Rucellai, 12 - 20126 Milano MI</span>
+        </div>
+        <div className="flex items-end justify-between gap-5">
+          <p>Copyright 2026 Whatabout</p>
+          <SocialLinks className="hidden md:flex" iconClassName="w-12 h-12" />
         </div>
       </div>
     </footer>
