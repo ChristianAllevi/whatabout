@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;700&display=swap");
 @import "tailwindcss";
+@config "../tailwind.config.ts";
 
 @font-face {
   font-family: "DX Playhigh Expanded";
@@ -9,19 +10,13 @@
   font-display: swap;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: #242424;
-  color: #FFF8E6;
+  background-color: #FFFFFF;
+  color: #1D2855;
   font-family: "Funnel Display", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -62,13 +57,46 @@ body {
 }
 
 .wa-btn-primary {
-  background-color: #214BFF;
+  background-color: #FF2EB3;
   color: #FFF8E6;
+}
+
+.wa-btn-primary:hover {
+  background-color: #214BFF;
+  opacity: 1;
 }
 
 .wa-btn-dark {
   background-color: #242424;
   color: #FFF8E6;
+}
+
+.wa-btn-dark:hover {
+  background-color: #214BFF;
+  opacity: 1;
+}
+
+/* Bottone rosa della homepage (design PDF): 44px, font display, minuscolo */
+.wa-btn-pink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 4px;
+  background-color: #FF2EB3;
+  color: #FFF8E6;
+  font-family: "Funnel Display", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.wa-btn-pink:hover {
+  background-color: #214BFF;
 }
 
 .wa-btn-outline {
