@@ -2,10 +2,22 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
+import { usePathname } from "next/navigation";
+import AnimatedWordmark from "@/components/ui/AnimatedWordmark";
+
+// Ogni quanti secondi il logo dell'header ripete l'animazione
+const LOGO_LOOP_SECONDS = 8;
+
+// Voci di menu: bianche, in secondary light quando la pagina è quella attiva.
+// Al momento "il progetto" coincide con la homepage.
+const NAV_ITEMS = [
+  { label: "il progetto", href: "/", isActive: (p: string) => p === "/" },
+  { label: "the whatabout tower", href: "/what-about-tower", isActive: (p: string) => p.startsWith("/what-about-tower") },
+];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -14,63 +26,70 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Banner height offset: banner is ~36px, navbar sits below it */}
-      <nav className="fixed top-9 left-0 right-0 z-40 flex items-center justify-between px-5 py-3">
-        {/* Logo — box con bordo */}
+      {/* Header sticky: altezza 0, quindi si sovrappone all'hero che segue.
+          Posizione naturale = bordo alto dell'hero (banner + margine hero); allo scroll si incolla al top.
+          Distanza dal margine di pagina (lati e alto): 12px mobile, 16px tablet, 20px desktop. */}
+      <div className="sticky top-0 z-50 h-0 mt-3 md:mt-4 lg:mt-5">
+        <header className="flex items-center justify-between px-6 md:px-8 lg:px-10 pt-3 md:pt-4 lg:pt-5">
+        {/* Logo — box crema, padding 10px, raggio 4px */}
         <Link
           href="/"
           onClick={() => setMenuOpen(false)}
-          className="border border-white/40 rounded-btn px-3 py-2 hover:border-white/70 transition-colors"
+          className="bg-bg-light rounded-btn p-2.5 hover:opacity-90 transition-opacity"
         >
-          <Image
-            src="/logo/logo-bicolor.svg"
-            alt="What About"
-            width={110}
-            height={19}
-            priority
+          <AnimatedWordmark
+            variant="bicolor"
+            trigger="mount"
+            delay={0.2}
+            loopEvery={LOGO_LOOP_SECONDS}
+            className="w-[140px] md:w-[218px]"
           />
         </Link>
 
-        {/* Desktop — box menu a destra */}
-        <div className="hidden md:flex border border-white/40 rounded-btn overflow-hidden">
-          <Link
-            href="/progetto"
-            className="px-5 py-2.5 text-bg-light hover:bg-white/10 transition-colors uppercase"
-            style={{ fontFamily: "DX Playhigh Expanded", fontSize: "13px", letterSpacing: "0.04em" }}
-          >
-            Il Progetto
-          </Link>
-          <div className="w-px bg-white/30" />
-          <Link
-            href="/tower"
-            className="px-5 py-2.5 text-bg-light hover:bg-white/10 transition-colors uppercase"
-            style={{ fontFamily: "DX Playhigh Expanded", fontSize: "13px", letterSpacing: "0.04em" }}
-          >
-            The Whatabout Tower
-          </Link>
-        </div>
+        {/* Tablet/desktop — box menu primary, padding 20px, raggio 4px */}
+        <nav className="hidden md:flex items-center bg-primary rounded-btn p-5">
+          {NAV_ITEMS.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={item.isActive(pathname) ? "page" : undefined}
+              className={`font-display uppercase text-[24px] leading-none px-5 transition-colors hover:text-secondary-light ${
+                item.isActive(pathname) ? "text-secondary-light" : "text-white"
+              }`}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-2 border border-white/40 rounded-btn"
+          className="md:hidden flex flex-col gap-1.5 p-3 bg-primary rounded-btn"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menu"
         >
-          <span className={`block w-5 h-0.5 bg-bg-light transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`block w-5 h-0.5 bg-bg-light transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-5 h-0.5 bg-bg-light transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+          <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+          <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
         </button>
-      </nav>
+        </header>
+      </div>
 
-      {/* Mobile overlay */}
-      <div className={`fixed inset-0 z-40 bg-bg-dark flex flex-col items-center justify-center gap-10 transition-all duration-400 md:hidden ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-        <Image src="/logo/logo-light.svg" alt="What About" width={180} height={31} className="opacity-20 mb-6" />
-        <Link href="/progetto" onClick={() => setMenuOpen(false)} className="text-bg-light uppercase" style={{ fontFamily: "DX Playhigh Expanded", fontSize: "32px" }}>
-          Il Progetto
-        </Link>
-        <Link href="/tower" onClick={() => setMenuOpen(false)} className="text-bg-light uppercase" style={{ fontFamily: "DX Playhigh Expanded", fontSize: "32px" }}>
-          The Whatabout Tower
-        </Link>
+      {/* Mobile overlay (sotto l'header, così l'hamburger resta cliccabile) */}
+      <div className={`fixed inset-0 z-40 bg-primary flex flex-col items-center justify-center gap-10 transition-all duration-300 md:hidden ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
+        {NAV_ITEMS.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={() => setMenuOpen(false)}
+            aria-current={item.isActive(pathname) ? "page" : undefined}
+            className={`font-display uppercase text-[32px] transition-colors ${
+              item.isActive(pathname) ? "text-secondary-light" : "text-white"
+            }`}
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
     </>
   );
