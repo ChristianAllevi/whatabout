@@ -1,18 +1,29 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function TopBanner() {
+  const pathname = usePathname();
+  const isTower = pathname === "/what-about-tower";
+
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-accent py-2 px-4 text-center">
-      <p
-        className="text-bg-light uppercase"
-        style={{ fontFamily: "Funnel Display", fontWeight: 700, fontSize: "13px", letterSpacing: "0.06em" }}
-      >
-        <span className="font-bold">The What About Tower</span>
-        {" "}il nostro primo prodotto in pre vendita dal 21 novembre{" "}
-        <Link href="/tower" className="underline underline-offset-2 hover:opacity-80 transition-opacity font-bold">
-          Iscriviti alla waiting list
-        </Link>
-      </p>
+    <div className="h-11 flex items-center justify-center bg-accent px-4 text-center">
+      {isTower ? (
+        <p className="font-body font-bold uppercase text-bg-light text-[12px] md:text-[16px] leading-none">
+          <Link href="#preordina" className="hover:opacity-80 transition-opacity">
+            preordina ora the whatabout tower: prossima release: 21 novembre
+          </Link>
+        </p>
+      ) : (
+        <p className="font-body uppercase text-bg-light text-[12px] md:text-[16px] leading-none">
+          <span className="font-bold">the what about tower</span>{" "}
+          il nostro primo prodotto in pre vendita dal 21 novembre{" "}
+          <Link href="/what-about-tower" className="font-bold hover:opacity-80 transition-opacity">
+            iscriviti alla waiting list
+          </Link>
+        </p>
+      )}
     </div>
   );
 }
