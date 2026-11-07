@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import AnimatedWordmark from "@/components/ui/AnimatedWordmark";
+import MaskReveal from "@/components/ui/MaskReveal";
 
 // Ogni quanti secondi il logo dell'header ripete l'animazione
 const LOGO_LOOP_SECONDS = 8;
@@ -12,11 +14,23 @@ const LOGO_LOOP_SECONDS = 8;
 // Al momento "il progetto" coincide con la homepage.
 const NAV_ITEMS = [
   { label: "il progetto", href: "/", isActive: (p: string) => p === "/" },
-  { label: "the whatabout tower", href: "/what-about-tower", isActive: (p: string) => p.startsWith("/what-about-tower") },
+  { label: "The WA Tower", href: "/what-about-tower", isActive: (p: string) => p.startsWith("/what-about-tower") },
+];
+
+// Link del menu mobile: per ora vuoti, da collegare quando esistono le pagine/profili
+const LEGAL_LINKS = [
+  { label: "privacy & cookie policy", href: "#" },
+  { label: "termini e condizioni", href: "#" },
+  { label: "domande frequenti", href: "#" },
+];
+const MENU_SOCIALS = [
+  { name: "Instagram", href: "#", icon: "/social/whatabout-instagram-icon-white.svg" },
+  { name: "TikTok", href: "#", icon: "/social/whatabout-tiktok-icon-white.svg" },
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openCount, setOpenCount] = useState(0);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -62,34 +76,80 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger: due barrette 30x16 (distanza 4px) che si sovrappongono in un "-" */}
         <button
-          className="md:hidden flex flex-col gap-1.5 p-3 bg-primary rounded-btn"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
+          className="md:hidden p-3 bg-primary rounded-btn"
+          onClick={() => {
+            if (!menuOpen) setOpenCount((c) => c + 1);
+            setMenuOpen(!menuOpen);
+          }}
+          aria-label={menuOpen ? "Chiudi menu" : "Apri menu"}
+          aria-expanded={menuOpen}
         >
-          <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-          <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-          <span className={`block w-5 h-0.5 bg-white transition-all duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+          <span className="relative block w-[30px] h-4">
+            <span
+              className="absolute left-0 w-full h-1.5 rounded-[1px] bg-bg-light transition-[top] duration-300 ease-in-out"
+              style={{ top: menuOpen ? 5 : 0 }}
+            />
+            <span
+              className="absolute left-0 w-full h-1.5 rounded-[1px] bg-bg-light transition-[top] duration-300 ease-in-out"
+              style={{ top: menuOpen ? 5 : 10 }}
+            />
+          </span>
         </button>
         </header>
       </div>
 
-      {/* Mobile overlay (sotto l'header, così l'hamburger resta cliccabile) */}
-      <div className={`fixed inset-0 z-40 bg-primary flex flex-col items-center justify-center gap-10 transition-all duration-300 md:hidden ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-        {NAV_ITEMS.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={() => setMenuOpen(false)}
-            aria-current={item.isActive(pathname) ? "page" : undefined}
-            className={`font-display uppercase text-[32px] transition-colors ${
-              item.isActive(pathname) ? "text-secondary-light" : "text-white"
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
+      {/* Mobile overlay a tutto schermo (sotto l'header, così logo e icona restano visibili e cliccabili) */}
+      <div
+        className={`fixed inset-0 z-40 bg-primary flex flex-col overflow-y-auto px-6 pt-[84px] pb-8 transition-opacity duration-300 md:hidden ${
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <nav className="mt-[80px] flex flex-col gap-6">
+          {NAV_ITEMS.map((item, i) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              aria-current={item.isActive(pathname) ? "page" : undefined}
+              className={`font-display uppercase text-[60px] leading-none transition-colors ${
+                item.isActive(pathname) ? "text-secondary-light" : "text-white"
+              }`}
+            >
+              {/* key con openCount: ad ogni apertura il componente si rimonta e l'entrata riparte */}
+              <MaskReveal key={openCount} className="block" delay={0.15 + i * 0.1}>
+                {item.label}
+              </MaskReveal>
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-auto pt-16 text-bg-light">
+          {/* TODO: collegare le pagine legali quando esistono */}
+          <div className="flex flex-col gap-3.5 font-body font-bold uppercase text-[14px] leading-none">
+            {LEGAL_LINKS.map((l) => (
+              <Link key={l.label} href={l.href} onClick={() => setMenuOpen(false)}>
+                {l.label}
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-10 flex items-end justify-between">
+            <div className="flex flex-col items-start gap-3 font-body text-[14px] leading-none">
+              <span>Progetto di</span>
+              <Image src="/logo/ellelab-logo-white.svg" alt="Elle Lab" width={134} height={14} className="h-3.5 w-auto" />
+            </div>
+            {/* TODO: collegare i profili social */}
+            <div className="flex items-center gap-5">
+              {MENU_SOCIALS.map((s) => (
+                <a key={s.name} href={s.href} aria-label={s.name}>
+                  <Image src={s.icon} alt="" width={36} height={36} className="w-9 h-9" />
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
