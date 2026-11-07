@@ -79,7 +79,7 @@ export default function Footer() {
           <span>Via Bernardo Rucellai, 12 - 20126 Milano MI</span>
         </div>
         <div className="flex items-end justify-between gap-5">
-          <p>Copyright 2026 Whatabout</p>
+          <p>Copyright 2026 What About</p>
           <SocialLinks className="hidden md:flex" iconClassName="w-12 h-12" />
         </div>
       </div>

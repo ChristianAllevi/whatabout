@@ -145,7 +145,7 @@ export default function HeroSlider() {
       {/* Testo centrato: label e prima frase fisse, solo la seconda frase cambia */}
       <div className="absolute inset-0 z-10 pointer-events-none flex flex-col items-center justify-center text-center px-5">
         <p className="font-body font-bold uppercase text-white text-[14px] leading-none mb-[60px]">
-          whatabout
+          What About
         </p>
         <div
           className="uppercase"
