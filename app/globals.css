@@ -12,6 +12,8 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #FFFFFF;
+  color-scheme: light;
 }
 
 body {
@@ -19,6 +21,19 @@ body {
   color: #1D2855;
   font-family: "Funnel Display", sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Titoli di sezione: 40px su mobile, fluido da tablet in su */
+.wa-h60 {
+  font-family: "DX Playhigh Expanded";
+  font-size: 40px;
+  line-height: 0.93;
+  text-transform: uppercase;
+}
+@media (min-width: 768px) {
+  .wa-h60 {
+    font-size: clamp(28px, 4.17vw, 60px);
+  }
 }
 
 /* Utility: sezione con margini laterali e angoli arrotondati */

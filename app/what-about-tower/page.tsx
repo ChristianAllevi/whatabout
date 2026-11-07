@@ -4,13 +4,6 @@ import TowerShowcaseImages from "@/components/sections/TowerShowcaseImages";
 import ElleLabSection from "@/components/sections/ElleLabSection";
 import MaskReveal from "@/components/ui/MaskReveal";
 
-const h60 = {
-  fontFamily: "DX Playhigh Expanded",
-  fontSize: "clamp(28px, 4.17vw, 60px)",
-  lineHeight: "0.93",
-  textTransform: "uppercase",
-} as const;
-
 const h80 = {
   fontFamily: "DX Playhigh Expanded",
   fontSize: "clamp(36px, 5.6vw, 80px)",
@@ -64,7 +57,7 @@ export default function TowerPage() {
         {/* Torre ritagliata in basso a destra */}
         <Image
           src="/images/torre-amicizia.png"
-          alt="The Whatabout Tower"
+          alt="The What About Tower"
           width={640}
           height={640}
           priority
@@ -73,7 +66,7 @@ export default function TowerPage() {
 
         <div className="relative z-20 h-full flex flex-col items-center justify-start md:justify-center text-center px-5 pt-[140px] md:pt-0 pointer-events-none">
           <p className="font-body font-bold uppercase text-white text-[14px] leading-none mb-[60px]">
-            the whatabout tower
+            The What About Tower
           </p>
           <h1>
             <span className="block text-white" style={h80}>
@@ -89,11 +82,11 @@ export default function TowerPage() {
       {/* SEZIONE: il gioco (box crema) */}
       <section className="relative mx-3 md:mx-4 lg:mx-5 mt-3 md:mt-4 lg:mt-5 rounded-section bg-bg-light">
         <div className="relative overflow-hidden rounded-section">
-          <div className="relative z-10 px-8 md:pl-[159px] py-[110px] md:pt-[128px] md:pb-[120px] md:min-h-[604px]">
-            <p className="font-body font-bold uppercase text-primary-dark text-[14px] leading-none mb-[47px]">
+          <div className="relative z-10 px-5 md:pl-[159px] pt-[80px] pb-[80px] min-h-[656px] md:pt-[128px] md:pb-[120px] md:min-h-[604px]">
+            <p className="font-body font-bold uppercase text-primary-dark text-[14px] leading-none mb-[22px] md:mb-[47px]">
               un gioco cooperativo, da 2 a 8 persone.
             </p>
-            <ul className="mb-[50px]" style={h60}>
+            <ul className="wa-h60 mb-[24px] md:mb-[50px]">
               <li className="text-primary-dark">una torre.</li>
               <li className="text-primary">3 livelli da superare.</li>
               <li className="text-accent">insieme.</li>
@@ -106,7 +99,7 @@ export default function TowerPage() {
             </p>
           </div>
 
-          <TowerShowcaseImages towerTop={94} />
+          <TowerShowcaseImages towerTop={94} showTowerOnMobile={false} />
         </div>
       </section>
 
@@ -116,7 +109,7 @@ export default function TowerPage() {
         className="mt-[100px] md:mt-[165px] px-8 md:px-[180px] scroll-mt-24"
       >
         <div className="grid grid-cols-1 md:grid-cols-[547px_1fr] gap-10 md:gap-0 items-start">
-          <h2 style={h60}>
+          <h2 className="wa-h60">
             <span className="block text-accent">preordina ora</span>
             <span className="block text-primary-dark">prossima release:</span>
             <span className="block text-primary">21 novembre</span>
@@ -151,7 +144,7 @@ export default function TowerPage() {
               />
               <Image
                 src="/images/torre-amicizia.png"
-                alt={`The Whatabout Tower — ${ed.name}`}
+                alt={`The What About Tower — ${ed.name}`}
                 width={350}
                 height={350}
                 className="absolute w-[350px] h-[350px] right-[-86px] top-[100px] max-w-none pointer-events-none"
@@ -159,9 +152,9 @@ export default function TowerPage() {
 
               <div className="relative z-10">
                 <p className="uppercase leading-[0.95] text-[40px]" style={{ fontFamily: "DX Playhigh Expanded" }}>
-                  <span className="block text-primary-dark">the</span>
-                  <span className="block text-primary">whatabout</span>
-                  <span className="block text-primary-dark">tower</span>
+                  <span className="block text-primary-dark">The</span>
+                  <span className="block text-primary">What About</span>
+                  <span className="block text-primary-dark">Tower</span>
                 </p>
                 <span className="inline-block mt-[14px] bg-white text-accent rounded-[2px] px-2 py-1 font-body font-bold uppercase text-[11px] leading-none tracking-[0.04em]">
                   {ed.name}
