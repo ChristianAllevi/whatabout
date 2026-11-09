@@ -3,6 +3,7 @@ import Link from "next/link";
 import TowerShowcaseImages from "@/components/sections/TowerShowcaseImages";
 import ElleLabSection from "@/components/sections/ElleLabSection";
 import MaskReveal from "@/components/ui/MaskReveal";
+import LevelsSlider from "@/components/sections/LevelsSlider";
 
 const h80 = {
   fontFamily: "DX Playhigh Expanded",
@@ -81,7 +82,8 @@ export default function TowerPage() {
 
       {/* SEZIONE: il gioco (box crema) */}
       <section className="relative mx-3 md:mx-4 lg:mx-5 mt-3 md:mt-4 lg:mt-5 rounded-section bg-bg-light">
-        <div className="relative overflow-hidden rounded-section">
+        <div className="relative overflow-hidden rounded-section pb-[80px] md:pb-[100px]">
+         <div className="relative">
           <div className="relative z-10 px-5 md:pl-[159px] pt-[80px] pb-[80px] min-h-[656px] md:pt-[128px] md:pb-[120px] md:min-h-[604px]">
             <p className="font-body font-bold uppercase text-primary-dark text-[14px] leading-none mb-[22px] md:mb-[47px]">
               un gioco cooperativo, da 2 a 8 persone.
@@ -100,6 +102,11 @@ export default function TowerPage() {
           </div>
 
           <TowerShowcaseImages towerTop={94} showTowerOnMobile={false} />
+         </div>
+
+         <div className="relative z-10">
+          <LevelsSlider />
+         </div>
         </div>
       </section>
 
