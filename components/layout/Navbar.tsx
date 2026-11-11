@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import AnimatedWordmark from "@/components/ui/AnimatedWordmark";
 import MaskReveal from "@/components/ui/MaskReveal";
+import CartButton from "@/components/cart/CartButton";
 
 // Ogni quanti secondi il logo dell'header ripete l'animazione
 const LOGO_LOOP_SECONDS = 8;
@@ -15,6 +16,7 @@ const LOGO_LOOP_SECONDS = 8;
 const NAV_ITEMS = [
   { label: "il progetto", href: "/", isActive: (p: string) => p === "/" },
   { label: "The WA Tower", href: "/what-about-tower", isActive: (p: string) => p.startsWith("/what-about-tower") },
+  { label: "Shop", href: "/shop", isActive: (p: string) => p.startsWith("/shop") },
 ];
 
 // Link del menu mobile: per ora vuoti, da collegare quando esistono le pagine/profili
@@ -28,10 +30,73 @@ const MENU_SOCIALS = [
   { name: "TikTok", href: "#", icon: "/social/whatabout-tiktok-icon-white.svg" },
 ];
 
+type NavLinksProps = {
+  variant: "desktop" | "mobile";
+  openCount?: number;
+  onNavigate?: () => void;
+};
+
+// Voci di menu. Solo qui si legge il percorso corrente (per la voce attiva): usePathname() è un dato
+// disponibile a runtime sulle pagine dinamiche (es. /shop/[handle]) e deve stare dentro un <Suspense>.
+// Il fallback mostra le stesse voci senza evidenziare quella attiva, così il menu c'è subito.
+function NavLinksView({ pathname, variant, openCount = 0, onNavigate }: NavLinksProps & { pathname: string }) {
+  if (variant === "desktop") {
+    return (
+      <nav className="hidden md:flex items-center bg-primary rounded-btn p-5">
+        {NAV_ITEMS.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            aria-current={item.isActive(pathname) ? "page" : undefined}
+            className={`font-display uppercase text-[24px] leading-none px-5 transition-colors hover:text-secondary-light ${
+              item.isActive(pathname) ? "text-secondary-light" : "text-white"
+            }`}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </nav>
+    );
+  }
+
+  return (
+    <nav className="mt-[80px] flex flex-col gap-6">
+      {NAV_ITEMS.map((item, i) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={onNavigate}
+          aria-current={item.isActive(pathname) ? "page" : undefined}
+          className={`font-display uppercase text-[60px] leading-none transition-colors ${
+            item.isActive(pathname) ? "text-secondary-light" : "text-white"
+          }`}
+        >
+          {/* key con openCount: ad ogni apertura il componente si rimonta e l'entrata riparte */}
+          <MaskReveal key={openCount} className="block" delay={0.15 + i * 0.1}>
+            {item.label}
+          </MaskReveal>
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
+function NavLinksWithPath(props: NavLinksProps) {
+  const pathname = usePathname();
+  return <NavLinksView pathname={pathname} {...props} />;
+}
+
+function NavLinks(props: NavLinksProps) {
+  return (
+    <Suspense fallback={<NavLinksView pathname="" {...props} />}>
+      <NavLinksWithPath {...props} />
+    </Suspense>
+  );
+}
+
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [openCount, setOpenCount] = useState(0);
-  const pathname = usePathname();
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -60,21 +125,12 @@ export default function Navbar() {
           />
         </Link>
 
+        <div className="flex items-center gap-2">
         {/* Tablet/desktop — box menu primary, padding 20px, raggio 4px */}
-        <nav className="hidden md:flex items-center bg-primary rounded-btn p-5">
-          {NAV_ITEMS.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              aria-current={item.isActive(pathname) ? "page" : undefined}
-              className={`font-display uppercase text-[24px] leading-none px-5 transition-colors hover:text-secondary-light ${
-                item.isActive(pathname) ? "text-secondary-light" : "text-white"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <NavLinks variant="desktop" />
+
+        {/* Carrello: box separato, sullo stesso piano del menu (desktop e mobile) */}
+        <CartButton className="p-3 md:p-5" onClick={() => setMenuOpen(false)} />
 
         {/* Mobile hamburger: due barrette 30x16 (distanza 4px) che si sovrappongono in un "-" */}
         <button
@@ -97,6 +153,7 @@ export default function Navbar() {
             />
           </span>
         </button>
+        </div>
         </header>
       </div>
 
@@ -106,24 +163,7 @@ export default function Navbar() {
           menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <nav className="mt-[80px] flex flex-col gap-6">
-          {NAV_ITEMS.map((item, i) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMenuOpen(false)}
-              aria-current={item.isActive(pathname) ? "page" : undefined}
-              className={`font-display uppercase text-[60px] leading-none transition-colors ${
-                item.isActive(pathname) ? "text-secondary-light" : "text-white"
-              }`}
-            >
-              {/* key con openCount: ad ogni apertura il componente si rimonta e l'entrata riparte */}
-              <MaskReveal key={openCount} className="block" delay={0.15 + i * 0.1}>
-                {item.label}
-              </MaskReveal>
-            </Link>
-          ))}
-        </nav>
+        <NavLinks variant="mobile" openCount={openCount} onNavigate={() => setMenuOpen(false)} />
 
         <div className="mt-auto pt-16 text-bg-light">
           {/* TODO: collegare le pagine legali quando esistono */}

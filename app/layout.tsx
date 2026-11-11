@@ -3,6 +3,8 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import TopBanner from "@/components/layout/TopBanner";
+import CartProvider from "@/components/cart/CartProvider";
+import CartDrawer from "@/components/cart/CartDrawer";
 
 export const metadata: Metadata = {
   title: "What About — Parliamo di noi.",
@@ -23,10 +25,13 @@ export default function RootLayout({
   return (
     <html lang="it">
       <body className="bg-white text-primary-dark">
-        <TopBanner />
-        <Navbar />
-        <main>{children}</main>
-        <Footer />
+        <CartProvider>
+          <TopBanner />
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+          <CartDrawer />
+        </CartProvider>
       </body>
     </html>
   );

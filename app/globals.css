@@ -114,6 +114,34 @@ body {
   background-color: #214BFF;
 }
 
+/* Testo della descrizione prodotto (HTML scritto in Shopify) */
+.wa-richtext {
+  font-family: "Funnel Display", sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 20px;
+  color: #1D2855;
+}
+.wa-richtext p {
+  margin-top: 12px;
+}
+.wa-richtext p:first-child {
+  margin-top: 0;
+}
+.wa-richtext strong {
+  font-weight: 700;
+}
+.wa-richtext ul {
+  margin-top: 12px;
+  padding-left: 20px;
+  list-style: disc;
+}
+.wa-richtext ol {
+  margin-top: 12px;
+  padding-left: 20px;
+  list-style: decimal;
+}
+
 .wa-btn-outline {
   background-color: transparent;
   color: #FFF8E6;
