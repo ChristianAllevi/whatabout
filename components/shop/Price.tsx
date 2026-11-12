@@ -1,7 +1,7 @@
 import { discountPercent, formatMoney } from "@/lib/shopify/format";
 import type { Money } from "@/lib/shopify/types";
 
-// Prezzo scontato in evidenza, prezzo pieno barrato e percentuale di sconto.
+// Prezzo scontato in evidenza (font display rosa), prezzo pieno barrato e badge sconto blu.
 export default function Price({
   price,
   compareAt,
@@ -12,22 +12,25 @@ export default function Price({
   size?: "md" | "lg";
 }) {
   const percent = discountPercent(price, compareAt);
-  const main = size === "lg" ? "text-[32px]" : "text-[22px]";
+  const main = size === "lg" ? "text-[44px]" : "text-[40px]";
   const old = size === "lg" ? "text-[20px]" : "text-[16px]";
 
   return (
-    <p className="font-body flex flex-wrap items-baseline gap-x-3 gap-y-1">
-      <span className={`font-bold leading-none ${main} ${compareAt ? "text-accent" : "text-primary-dark"}`}>
+    <p className="font-body flex flex-wrap items-center gap-x-3 gap-y-2">
+      <span
+        className={`uppercase leading-none ${main} ${compareAt ? "text-accent" : "text-primary-dark"}`}
+        style={{ fontFamily: "DX Playhigh Expanded" }}
+      >
         {formatMoney(price)}
       </span>
       {compareAt && (
         <>
-          <s className={`leading-none opacity-60 ${old}`} aria-label={`Prezzo pieno ${formatMoney(compareAt)}`}>
+          <s className={`leading-none text-primary-dark ${old}`} aria-label={`Prezzo pieno ${formatMoney(compareAt)}`}>
             {formatMoney(compareAt)}
           </s>
           {percent !== null && (
-            <span className="bg-white text-accent rounded-[2px] px-2 py-1 font-bold uppercase text-[11px] leading-none tracking-[0.04em]">
-              −{percent}% preordine
+            <span className="bg-primary text-white rounded-[2px] px-2 py-1.5 font-medium uppercase text-[13px] leading-none">
+              −{percent}% in preordine
             </span>
           )}
         </>

@@ -28,7 +28,7 @@ export function getAvailability(v: ProductVariant | null): Availability {
 
   const low = qty <= SHOP_CONFIG.lowStockThreshold;
   return {
-    label: low ? `Ultimi ${qty} pezzi` : `Ne restano ${qty}`,
+    label: low ? `Ultimi ${qty} pezzi` : `Solo ${qty} disponibili in preordine`,
     soldOut: false,
     max: qty,
   };

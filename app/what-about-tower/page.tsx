@@ -4,6 +4,7 @@ import TowerShowcaseImages from "@/components/sections/TowerShowcaseImages";
 import ElleLabSection from "@/components/sections/ElleLabSection";
 import MaskReveal from "@/components/ui/MaskReveal";
 import LevelsSlider from "@/components/sections/LevelsSlider";
+import { DELIVERY_LABEL } from "@/lib/shop-config";
 
 const h80 = {
   fontFamily: "DX Playhigh Expanded",
@@ -128,7 +129,7 @@ export default function TowerPage() {
               sprechi e garantire la qualità di ogni singolo mattoncino. Preordina per essere tra le
               prime persone a ricevere la torre.
             </p>
-            <p className="font-body font-bold mt-5">Consegna prevista entro il: 21 Dicembre</p>
+            <p className="font-body font-bold mt-5">{DELIVERY_LABEL}</p>
           </div>
         </div>
 

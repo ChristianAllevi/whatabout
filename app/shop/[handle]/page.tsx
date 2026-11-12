@@ -8,7 +8,7 @@ import ProductCard from "@/components/shop/ProductCard";
 import ProductGallery from "@/components/shop/ProductGallery";
 import { getAvailability } from "@/lib/shopify/format";
 import { getProduct, getRelatedProducts } from "@/lib/shopify/products";
-import { DELIVERY_LABEL, SHOP_CONFIG, editionColor } from "@/lib/shop-config";
+import { DELIVERY_LABEL, SHOP_CONFIG, editionColor, splitProductTitle } from "@/lib/shop-config";
 
 type Props = { params: Promise<{ handle: string }> };
 
@@ -57,7 +57,12 @@ async function ProductContent({ params }: Props) {
             Preordine
           </span>
 
-          <h1 className="mt-4 wa-h60 !text-[clamp(28px,3.2vw,48px)] text-primary-dark">{product.title}</h1>
+          <h1 className="mt-4 wa-h60 !text-[clamp(28px,3.2vw,48px)] text-primary-dark">
+            <span className="block">{splitProductTitle(product.title)[0]}</span>
+            {splitProductTitle(product.title)[1] && (
+              <span className="block text-primary">{splitProductTitle(product.title)[1]}</span>
+            )}
+          </h1>
 
           {variant && (
             <div className="mt-6">

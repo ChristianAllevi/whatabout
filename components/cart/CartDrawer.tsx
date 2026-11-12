@@ -142,8 +142,9 @@ export default function CartDrawer() {
               <span className="font-bold text-[18px]">{formatMoney(cart.subtotal)}</span>
             </div>
             <p className="mt-2 font-body text-[12px] leading-4 opacity-80">
-              Ordine in preordine: {DELIVERY_LABEL.toLowerCase()}. {SHOP_CONFIG.pickupNote} La spedizione si
-              calcola al checkout.
+              Stai acquistando in preordine: le spedizioni inizieranno entro il{" "}
+              {SHOP_CONFIG.deliveryDate.toLowerCase()}. La spedizione verrà calcolata al checkout.{" "}
+              {SHOP_CONFIG.pickupNote}
             </p>
             <a href={cart.checkoutUrl} className="wa-btn-pink mt-4 w-full">
               procedi al checkout
