@@ -16,7 +16,8 @@ const LOGO_LOOP_SECONDS = 8;
 const NAV_ITEMS = [
   { label: "il progetto", href: "/", isActive: (p: string) => p === "/" },
   { label: "The WA Tower", href: "/what-about-tower", isActive: (p: string) => p.startsWith("/what-about-tower") },
-  { label: "Shop", href: "/shop", isActive: (p: string) => p.startsWith("/shop") },
+  // TEMPORANEO: voce "Shop" nascosta dal menu finché lo shop non è pronto al pubblico.
+  // { label: "Shop", href: "/shop", isActive: (p: string) => p.startsWith("/shop") },
 ];
 
 // Link del menu mobile: per ora vuoti, da collegare quando esistono le pagine/profili
